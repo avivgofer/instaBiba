@@ -1,0 +1,464 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		041C762721A4B26D005DE45A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 041C762621A4B26D005DE45A /* GoogleService-Info.plist */; };
+		0420DB6121A4806E00FEC203 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0420DB6021A4806E00FEC203 /* LoginViewController.swift */; };
+		0455287721B90B1800497F58 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0455287621B90B1800497F58 /* User.swift */; };
+		0455287921B90D8200497F58 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0455287821B90D8200497F58 /* Post.swift */; };
+		0455287B21B925EB00497F58 /* ModelFirebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0455287A21B925EB00497F58 /* ModelFirebase.swift */; };
+		0455287D21B93BD400497F58 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0455287C21B93BD400497F58 /* Model.swift */; };
+		0455287F21BADECF00497F58 /* AddPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0455287E21BADECF00497F58 /* AddPostViewController.swift */; };
+		04E2ACB821A9D23000238EFF /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E2ACB721A9D23000238EFF /* ImageCollectionViewCell.swift */; };
+		04E2ACBA21A9DB0400238EFF /* CustomImageFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E2ACB921A9DB0400238EFF /* CustomImageFlowLayout.swift */; };
+		04EE285A21A42930007EDBBB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04EE285921A42930007EDBBB /* AppDelegate.swift */; };
+		04EE285C21A42930007EDBBB /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04EE285B21A42930007EDBBB /* ViewController.swift */; };
+		04EE285F21A42930007EDBBB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 04EE285D21A42930007EDBBB /* Main.storyboard */; };
+		04EE286121A42931007EDBBB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 04EE286021A42931007EDBBB /* Assets.xcassets */; };
+		04EE286421A42931007EDBBB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 04EE286221A42931007EDBBB /* LaunchScreen.storyboard */; };
+		24BB69478FDDC4222A413D9B /* Pods_instaBiba.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9297BAFC0EA1FDC585D42804 /* Pods_instaBiba.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		041C762621A4B26D005DE45A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		0420DB6021A4806E00FEC203 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		0455287621B90B1800497F58 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		0455287821B90D8200497F58 /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
+		0455287A21B925EB00497F58 /* ModelFirebase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelFirebase.swift; sourceTree = "<group>"; };
+		0455287C21B93BD400497F58 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
+		0455287E21BADECF00497F58 /* AddPostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPostViewController.swift; sourceTree = "<group>"; };
+		04E2ACB721A9D23000238EFF /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
+		04E2ACB921A9DB0400238EFF /* CustomImageFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomImageFlowLayout.swift; sourceTree = "<group>"; };
+		04EE285621A42930007EDBBB /* instaBiba.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = instaBiba.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		04EE285921A42930007EDBBB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		04EE285B21A42930007EDBBB /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		04EE285E21A42930007EDBBB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		04EE286021A42931007EDBBB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		04EE286321A42931007EDBBB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		04EE286521A42931007EDBBB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		39381EA37261AED86CD2D5BE /* Pods-instaBiba.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-instaBiba.release.xcconfig"; path = "Pods/Target Support Files/Pods-instaBiba/Pods-instaBiba.release.xcconfig"; sourceTree = "<group>"; };
+		9297BAFC0EA1FDC585D42804 /* Pods_instaBiba.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_instaBiba.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E5E8EAB4A54B4A951C527E06 /* Pods-instaBiba.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-instaBiba.debug.xcconfig"; path = "Pods/Target Support Files/Pods-instaBiba/Pods-instaBiba.debug.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		04EE285321A42930007EDBBB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				24BB69478FDDC4222A413D9B /* Pods_instaBiba.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0455287521B90AF500497F58 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				0455287621B90B1800497F58 /* User.swift */,
+				0455287821B90D8200497F58 /* Post.swift */,
+				0455287A21B925EB00497F58 /* ModelFirebase.swift */,
+				0455287C21B93BD400497F58 /* Model.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		04EE284D21A42930007EDBBB = {
+			isa = PBXGroup;
+			children = (
+				04EE285821A42930007EDBBB /* instaBiba */,
+				04EE285721A42930007EDBBB /* Products */,
+				BC05D2C7735B2D2D93604326 /* Pods */,
+				23DB56D31F1A41DAAA8F0EC5 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		04EE285721A42930007EDBBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				04EE285621A42930007EDBBB /* instaBiba.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		04EE285821A42930007EDBBB /* instaBiba */ = {
+			isa = PBXGroup;
+			children = (
+				0455287521B90AF500497F58 /* Model */,
+				041C762621A4B26D005DE45A /* GoogleService-Info.plist */,
+				04EE285921A42930007EDBBB /* AppDelegate.swift */,
+				04EE285B21A42930007EDBBB /* ViewController.swift */,
+				0420DB6021A4806E00FEC203 /* LoginViewController.swift */,
+				04EE285D21A42930007EDBBB /* Main.storyboard */,
+				04EE286021A42931007EDBBB /* Assets.xcassets */,
+				04EE286221A42931007EDBBB /* LaunchScreen.storyboard */,
+				04EE286521A42931007EDBBB /* Info.plist */,
+				04E2ACB721A9D23000238EFF /* ImageCollectionViewCell.swift */,
+				04E2ACB921A9DB0400238EFF /* CustomImageFlowLayout.swift */,
+				0455287E21BADECF00497F58 /* AddPostViewController.swift */,
+			);
+			path = instaBiba;
+			sourceTree = "<group>";
+		};
+		23DB56D31F1A41DAAA8F0EC5 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				9297BAFC0EA1FDC585D42804 /* Pods_instaBiba.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		BC05D2C7735B2D2D93604326 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				E5E8EAB4A54B4A951C527E06 /* Pods-instaBiba.debug.xcconfig */,
+				39381EA37261AED86CD2D5BE /* Pods-instaBiba.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		04EE285521A42930007EDBBB /* instaBiba */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 04EE286821A42931007EDBBB /* Build configuration list for PBXNativeTarget "instaBiba" */;
+			buildPhases = (
+				DCB04D535F8E05A2159D4192 /* [CP] Check Pods Manifest.lock */,
+				04EE285221A42930007EDBBB /* Sources */,
+				04EE285321A42930007EDBBB /* Frameworks */,
+				04EE285421A42930007EDBBB /* Resources */,
+				F86DFF352589664D7BECBD22 /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = instaBiba;
+			productName = instaBiba;
+			productReference = 04EE285621A42930007EDBBB /* instaBiba.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		04EE284E21A42930007EDBBB /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1010;
+				LastUpgradeCheck = 1010;
+				ORGANIZATIONNAME = "aviv gofer";
+				TargetAttributes = {
+					04EE285521A42930007EDBBB = {
+						CreatedOnToolsVersion = 10.1;
+					};
+				};
+			};
+			buildConfigurationList = 04EE285121A42930007EDBBB /* Build configuration list for PBXProject "instaBiba" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 04EE284D21A42930007EDBBB;
+			productRefGroup = 04EE285721A42930007EDBBB /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				04EE285521A42930007EDBBB /* instaBiba */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		04EE285421A42930007EDBBB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				04EE286421A42931007EDBBB /* LaunchScreen.storyboard in Resources */,
+				041C762721A4B26D005DE45A /* GoogleService-Info.plist in Resources */,
+				04EE286121A42931007EDBBB /* Assets.xcassets in Resources */,
+				04EE285F21A42930007EDBBB /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		DCB04D535F8E05A2159D4192 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-instaBiba-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F86DFF352589664D7BECBD22 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-instaBiba/Pods-instaBiba-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
+				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
+				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
+				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-instaBiba/Pods-instaBiba-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		04EE285221A42930007EDBBB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0455287D21B93BD400497F58 /* Model.swift in Sources */,
+				0455287B21B925EB00497F58 /* ModelFirebase.swift in Sources */,
+				04E2ACB821A9D23000238EFF /* ImageCollectionViewCell.swift in Sources */,
+				0420DB6121A4806E00FEC203 /* LoginViewController.swift in Sources */,
+				0455287721B90B1800497F58 /* User.swift in Sources */,
+				04EE285C21A42930007EDBBB /* ViewController.swift in Sources */,
+				0455287F21BADECF00497F58 /* AddPostViewController.swift in Sources */,
+				04EE285A21A42930007EDBBB /* AppDelegate.swift in Sources */,
+				0455287921B90D8200497F58 /* Post.swift in Sources */,
+				04E2ACBA21A9DB0400238EFF /* CustomImageFlowLayout.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		04EE285D21A42930007EDBBB /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				04EE285E21A42930007EDBBB /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		04EE286221A42931007EDBBB /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				04EE286321A42931007EDBBB /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		04EE286621A42931007EDBBB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		04EE286721A42931007EDBBB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		04EE286921A42931007EDBBB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = E5E8EAB4A54B4A951C527E06 /* Pods-instaBiba.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = instaBiba/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = eliranBiba.instaBiba;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		04EE286A21A42931007EDBBB /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 39381EA37261AED86CD2D5BE /* Pods-instaBiba.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				INFOPLIST_FILE = instaBiba/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = eliranBiba.instaBiba;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		04EE285121A42930007EDBBB /* Build configuration list for PBXProject "instaBiba" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				04EE286621A42931007EDBBB /* Debug */,
+				04EE286721A42931007EDBBB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		04EE286821A42931007EDBBB /* Build configuration list for PBXNativeTarget "instaBiba" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				04EE286921A42931007EDBBB /* Debug */,
+				04EE286A21A42931007EDBBB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 04EE284E21A42930007EDBBB /* Project object */;
+}

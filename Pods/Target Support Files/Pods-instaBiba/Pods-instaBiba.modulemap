@@ -1,0 +1,6 @@
+framework module Pods_instaBiba {
+  umbrella header "Pods-instaBiba-umbrella.h"
+
+  export *
+  module * { export * }
+}
