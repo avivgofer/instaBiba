@@ -14,32 +14,61 @@ import FirebaseDatabase
 
 
 
-class ViewController: UIViewController ,UICollectionViewDataSource  {
-    
+class ViewController: UIViewController ,UICollectionViewDataSource,UICollectionViewDelegate  {
 
+    
+    @IBOutlet weak var profileName: UILabel!
+    @IBOutlet weak var numberOfFollowing: UILabel!
+    @IBOutlet weak var numberOfFollowers: UILabel!
+    @IBOutlet weak var numberOfPosts: UILabel!
+    @IBOutlet weak var profileImageView: UIImageView!
     var imageFileName :String = ""
+    var posts : [Post]?
     var customImageFlowLayout : CustomImageFlowLayout!
     @IBOutlet weak var imageCollection: UICollectionView!
     var images = [UIImage]()
-    @IBOutlet weak var LoginInfo: UILabel!
     @IBOutlet weak var LoginButton: UIBarButtonItem!
-    @IBOutlet weak var LogoutButton: UIBarButtonItem!
     var ref : DatabaseReference?
     var imagePicker = UIImagePickerController()
     @IBOutlet weak var addImageButton: UIBarButtonItem!
-    
+    var currentUser : User?
    
-    
-    
     override func viewDidLoad() { 
         super.viewDidLoad()
-       
+        circleImageView(image: self.profileImageView)
         customImageFlowLayout = CustomImageFlowLayout()
-        imageCollection.collectionViewLayout = customImageFlowLayout
-        imageCollection.backgroundColor = .white
+        imageCollectionPrefrence()
         ref = Database.database().reference()
         imagePicker.delegate = self
-       
+     
+    }
+    
+    func imageCollectionPrefrence()
+    {
+        imageCollection.collectionViewLayout = customImageFlowLayout
+        imageCollection.backgroundColor = .white
+        imageCollection.dataSource = self
+        imageCollection.delegate = self
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        if (Auth.auth().currentUser != nil){
+            self.LoginButton.title = "Logout"
+            images.removeAll()
+            self.loadImages()
+            imageCollection.reloadData()
+            posts?.removeAll()
+            Model.instance.getAllPostsByEmail(email:((Auth.auth().currentUser!.email)!)){ (result) -> () in
+                result.sorted(by: { $0.date > $1.date})
+                self.posts = result
+                print("d")
+            }
+            Model.instance.getCurrentUser(completion:{ result in
+                self.downloadProfileImage(from: URL(string: result.profileImgUrl )!)
+                self.profileName.text = result.name
+                self.numberOfPosts.text = String(self.images.count)
+            })
+        }
     }
     
     
@@ -47,6 +76,15 @@ class ViewController: UIViewController ,UICollectionViewDataSource  {
         super.didReceiveMemoryWarning()
     }
    
+    
+    func circleImageView(image: UIImageView)
+    {
+        image.layer.borderWidth = 1
+        image.layer.masksToBounds = false
+        image.layer.borderColor = UIColor.black.cgColor
+        image.layer.cornerRadius = profileImageView.frame.height/2
+        image.clipsToBounds = true
+    }
 
  
     func getData(from url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> ()) {
@@ -55,11 +93,12 @@ class ViewController: UIViewController ,UICollectionViewDataSource  {
     
     
     func  appendImage(img :UIImage){
-        self.images.append(img as UIImage)
+        self.images.append(img)
         self.imageCollection.reloadData()
+        self.numberOfPosts.text = String(self.images.count)
     }
     
-    func downloadImage(from url: URL) {
+    func downloadImage(from url: URL ,completion: ()->()) {
         print("Download Started")
         getData(from: url) { data, response, error in
             guard let data = data, error == nil else { return }
@@ -75,6 +114,20 @@ class ViewController: UIViewController ,UICollectionViewDataSource  {
         }
     }
     
+    func downloadProfileImage(from url: URL) {
+        print("Download Started")
+        getData(from: url) { data, response, error in
+            guard let data = data, error == nil else { return }
+            print(response?.suggestedFilename ?? url.lastPathComponent)
+            print("Download Finished")
+            DispatchQueue.main.async() {
+                let imageT = UIImage(data: data)!
+                self.profileImageView.image = imageT
+                
+            }
+        }
+    }
+    
     
     func loadImages(){
         ref?.child("Posts").child(getEmailName()).observeSingleEvent(of: .value, with: { (snapshot) in
@@ -85,7 +138,10 @@ class ViewController: UIViewController ,UICollectionViewDataSource  {
                     let x = eachFetchedRestaurant as? NSDictionary
                     let imageUrlData = (x!.value(forKey: "imageUrl"))!
                     print(imageUrlData)
-                    self.downloadImage(from: URL(string: imageUrlData as! String)! )
+                    self.downloadImage(from: URL(string: imageUrlData as! String)!){ () -> () in
+                        //Callback
+                        self.imageCollection.reloadData()
+                    }
                 }
             }
         }) { (error) in
@@ -99,31 +155,14 @@ class ViewController: UIViewController ,UICollectionViewDataSource  {
         imagePicker.allowsEditing = true
         present(imagePicker,animated: true,completion: nil)  //open the image picker and call the imagePickerController
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        if (Auth.auth().currentUser != nil){
-            self.LoginButton.isEnabled = false
-            self.LogoutButton.isEnabled = true
-            self.LoginInfo.text = "Hello " + (Auth.auth().currentUser?.email)!
-            self.loadImages()
-            
-        }else{
-            self.LogoutButton.isEnabled = false
-            self.LoginButton.isEnabled = true
-            self.LoginInfo.text = "Pleass log in"
-    }
-}
+
     
     @IBAction func LogoutButtonClick(_ sender: Any) {
         if Auth.auth().currentUser != nil{
+            self.images.removeAll()
+            imageCollection.reloadData()
             do{
                try Auth.auth().signOut()
-                self.LogoutButton.isEnabled = false
-                self.LoginButton.isEnabled = true
-                self.LoginInfo.text = "Pleass log in"
-                //self.imageCollection.delete()
-                
-                self.imageCollection.removeFromSuperview()
             }catch let SignOutError as NSError{
                 print("Error SignOut: %@",SignOutError)
             }
@@ -139,6 +178,21 @@ class ViewController: UIViewController ,UICollectionViewDataSource  {
         let image = images[indexPath.row]
         cell.imageView.image = image
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "postViewController") as? postViewController
+        {
+            print(indexPath[1])
+            //  vc.user = self.users[indexPath[1]]
+            //
+            vc.userNameTemp = profileName.text!
+            vc.userProfileImageTemp = self.profileImageView
+            vc.postImage = images[indexPath[1]]
+            vc.post = self.posts![indexPath[1]]
+            //   vc.myImageView.image = x
+            present(vc, animated: true, completion: nil)
+        }
     }
 }
 
@@ -157,9 +211,7 @@ extension ViewController :  UINavigationControllerDelegate , UIImagePickerContro
     
     //getting the name of the current user from is email before the "@" and "."
     func getEmailName() -> String {
-        let emailName = Auth.auth().currentUser?.email?.split(separator: "@")[0].split(separator: ".")[0]
-        
-        return emailName != nil ? (String(emailName!)) : "noNameEmail"
+       return  Model.instance.getNameFromEmail()
     }
     
     //Upload image from gallery to firebase

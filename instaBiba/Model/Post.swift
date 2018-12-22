@@ -14,7 +14,9 @@ class Post {
     let email:String
     let title:String
     let imageUrl:String
-    let likes : [User]?
+    let likes:[User]?
+    let date:String
+    var comments:[Comment]?
     //let phone:String
     
     
@@ -24,6 +26,8 @@ class Post {
         title = _title
         imageUrl = _imageUrl
         likes = nil
+        date = DateFormatter.sharedDateFormatter.string(from: Date())
+        comments = nil
     }
     
     init(json:[String:Any]) {
@@ -32,6 +36,9 @@ class Post {
         title = json["title"] as! String
         imageUrl = json["imageUrl"] as! String
         likes = json["likes"] as! [User]?
+        date = DateFormatter.sharedDateFormatter.string(from: Date())
+        comments = nil
+       // comments = json["comments"] as! [Comment]?
     }
   
     
@@ -42,6 +49,13 @@ class Post {
         json["title"] = title
         json["imageUrl"] = imageUrl
         json["likes"] = likes
+        json["date"] = date
+        if(comments != nil)
+        {//noooo
+            json["comments"] = comments // not done yet
+        }
+      //  json["comments"] = comments![0].toJson()
         return json
     }
 }
+

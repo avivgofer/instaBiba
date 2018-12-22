@@ -12,7 +12,12 @@ import FirebaseAuth
 import FirebaseStorage
 
 class LoginViewController: UIViewController,UIImagePickerControllerDelegate,UINavigationControllerDelegate {
-
+   
+   
+    @IBOutlet weak var signUpProgressItem: UIActivityIndicatorView!
+    @IBOutlet weak var signUpButton: UIButton!
+    @IBOutlet weak var loginButton: UIButton!
+    @IBOutlet weak var signinProgressItem: UIActivityIndicatorView!
     var imagePicker = UIImagePickerController()
     @IBOutlet weak var profileImg: UIImageView!
     @IBOutlet weak var nameSignup: UITextField!
@@ -21,19 +26,28 @@ class LoginViewController: UIViewController,UIImagePickerControllerDelegate,UINa
     @IBOutlet weak var errorLabel: UILabel!
     @IBOutlet weak var userNameTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
-    var ref: DatabaseReference!
-    static var isAlreadyLaunchedOnce = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        ref = Database.database().reference()
+        signinProgressItem.isHidden = true
+        signUpProgressItem.isHidden = true
         imagePicker.delegate = self
-        // Do any additional setup after loading the view.
+        if Auth.auth().currentUser != nil{
+            do{
+                try Auth.auth().signOut()
+            }catch let SignOutError as NSError{
+                print("Error SignOut: %@",SignOutError)
+            }
+        }
+        self.hideKeyboardWhenTappedAround() 
     }
+    
     @IBAction func selectImgClicked(_ sender: Any) {
         self.imagePicker.sourceType = .photoLibrary
         imagePicker.allowsEditing = true
         present(imagePicker,animated: true,completion: nil)
     }
+    
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage{
             self.profileImg.image = image
@@ -44,20 +58,23 @@ class LoginViewController: UIViewController,UIImagePickerControllerDelegate,UINa
     
     //signUp user with firebase auth and data
     @IBAction func signupClickButton(_ sender: Any) {
-        if(emailSignup.text != "" && passwordSignup.text != "" && nameSignup.text != "")
+        
+        if(emailSignup.text != "" && passwordSignup.text != "" && nameSignup.text != "" && self.profileImg.image != nil)
         {
+            signUpButton.isHidden = true
+            signUpProgressItem.isHidden = false
+            signUpProgressItem.startAnimating()
             Auth.auth().createUser(withEmail: (emailSignup.text ?? ""), password: (passwordSignup.text ?? "")) { (result, error) in
                 if let _eror = error {
                     //something bad happning
                     print(_eror.localizedDescription )
                     
                 }else{
-                    //user registered successfully
-                   // let userID = Auth.auth().currentUser?.uid
-//                    let user = User(_id: userID!, _name: self.nameSignup.text!, _email: self.emailSignup.text!,_profileImgUrl:"temp",_followingList:nil,_followersList:nil)
-//                    Model.instance.addNewUserToData(user: user)
-                    self.uploadImageToStorageAndData(image: self.profileImg.image!)
-                    self.presentingViewController?.dismiss(animated: true, completion: nil)
+                    Model.instance.uploadProfileImageToStorageAndData(image: self.profileImg.image!,name: self.nameSignup.text!,email: self.emailSignup.text!,completion:{
+                      //  ViewController.viewController
+                        self.signUpProgressItem.stopAnimating()
+                        self.presentingViewController?.dismiss(animated: true, completion: nil)
+                    })
                     print(result ?? "register Success")
                 }
             }
@@ -65,64 +82,18 @@ class LoginViewController: UIViewController,UIImagePickerControllerDelegate,UINa
         }
     }
     
-    //random name for image
-    func randomStringWithLength(length: Int) -> NSString {
-        let characters: NSString = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-        let randomString: NSMutableString = NSMutableString(capacity: length)
-        
-        for _ in 0..<length {
-            let len = UInt32(characters.length)
-            let rand = arc4random_uniform(len)
-            randomString.appendFormat("%C", characters.character(at: Int(rand)))
-        }
-        return randomString
-    }
-    
-    //getting the name of the current user from is email before the "@"
-    func getEmailName() -> String {
-        let emailName = Auth.auth().currentUser?.email?.split(separator: "@")[0]
-        return emailName != nil ? (String(emailName!)) : "noNameEmail"
-    }
-    
-    
-    func uploadImageToStorageAndData(image: UIImage) {
-        
-        let imageData = image.jpegData(compressionQuality: 10)
-        //let imageData = image.pngData()
-        
-        
-        let uploadRef = Storage.storage().reference().child("images/\(getEmailName())/profileImg.jpg")
-        _ = uploadRef.putData(imageData!, metadata: nil) { (metadata, error) in
-            uploadRef.downloadURL { (url, error) in
-                guard let downloadURL = url else {
-                    // Uh-oh, an error occurred!
-                    return
-                }
-               // let key = self.ref?.childByAutoId().key
-              //  let image = ["url" : downloadURL.absoluteString]
-               // let childUpdates = ["/\(String(describing: key))": image]
-                 let randomName = self.randomStringWithLength(length: 10)
-//                let postTitle = "profileImage"
-//                let userEmail = Auth.auth().currentUser?.email
-                 let url = downloadURL.absoluteString
-                let user = User(_id: randomName as String, _name: self.nameSignup.text!, _email: self.emailSignup.text!, _profileImgUrl: url, _followingList: nil, _followersList: nil)
-//                let post = Post(_id: randomName as String,_email : userEmail!, _title: postTitle, _imageUrl: url)
-//                Model.instance.addNewPostToData(post:post)
-                Model.instance.addNewUserToData(user: user)
-               //  self.ref?.updateChildValues(childUpdates)
-            }
-        }
-    }
-    
-    
     //login user Auth with firebase
     @IBAction func loginClickButton(_ sender: Any) {
         print("Login buttin Clicked")
         if(userNameTextField.text != "" && passwordTextField.text != "")
         {
+            loginButton.isHidden = true
+            signinProgressItem.isHidden = false
+            signinProgressItem.startAnimating()
             Auth.auth().signIn(withEmail: userNameTextField.text!, password: passwordTextField.text!) { (user, error) in
                 if(user != nil) {
                 print("user Authenticated")
+                    self.signinProgressItem.stopAnimating()
                 self.presentingViewController?.dismiss(animated: true, completion: nil)
                 }
                 else{
@@ -136,15 +107,15 @@ class LoginViewController: UIViewController,UIImagePickerControllerDelegate,UINa
             self.errorLabel.isHidden = false
         }
     }
-    
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+}
+extension UIViewController {
+    func hideKeyboardWhenTappedAround() {
+        let tap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(UIViewController.dismissKeyboard))
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
     }
-    */
-
+    
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
+    }
 }

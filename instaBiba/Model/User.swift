@@ -8,6 +8,8 @@
 
 import UIKit
 import Foundation
+import FirebaseDatabase
+
 class User {
     let id:String
     let email:String
@@ -27,13 +29,27 @@ class User {
         followersList = _followersList
     }
     
+    init(snapshot: DataSnapshot) {
+        let udic = snapshot.value! as! [String: AnyObject]
+        id = udic["id"] as! String
+        name = udic["name"] as! String
+        email = udic["email"] as! String
+        profileImgUrl = udic["profileImgUrl"] as! String
+        followingList = nil
+        followersList = nil
+//        id = ""
+//        name = ""
+//        email = ""
+        
+    }
+    
     init(json:[String:Any]) {
         id = json["id"] as! String
         name = json["name"] as! String
         email = json["email"] as! String
         profileImgUrl = json["profileImgUrl"] as! String
-        followingList = json["followingList"] as! User
-        followersList = json["followersList"] as! User
+        followingList = json["followingList"] as? User
+        followersList = json["followersList"] as? User
     }
     
     func toJson() -> [String:Any] {
