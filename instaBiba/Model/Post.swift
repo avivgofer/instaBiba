@@ -36,7 +36,8 @@ class Post {
         title = json["title"] as! String
         imageUrl = json["imageUrl"] as! String
         likes = json["likes"] as! [User]?
-        date = DateFormatter.sharedDateFormatter.string(from: Date())
+        date = json["date"] as! String
+        //date = DateFormatter.sharedDateFormatter.string(from: Date())
         comments = nil
        // comments = json["comments"] as! [Comment]?
     }

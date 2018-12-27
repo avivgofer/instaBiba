@@ -20,9 +20,7 @@ class ModelFirebase {
     init(){
         ref = Database.database().reference()
         imageUrlFromData = ""
-        
     }
-   
     
     func getEmailName() -> String {
         let emailName = Auth.auth().currentUser?.email?.split(separator: "@")[0].split(separator: ".")[0]
@@ -41,62 +39,103 @@ class ModelFirebase {
    
     func getProfileImageUrlByEmailName(emailName:String,completion:@escaping (String)->()){
         ref?.child("Users").child(emailName).observeSingleEvent(of: .value, with: { (snapshot) in
-            //in my case the answer is of type array so I can cast it like this, should also work with NSDictionary or NSNumber
             if let snapshotValue = snapshot.value as? NSDictionary{
-                //then I iterate over the values
-                var tempUrl = snapshotValue.value(forKey: "profileImgUrl") as! String
-//                for (_,eachFetchedRestaurant) in snapshotValue{
-//                    //  let x = eachFetchedRestaurant as? NSDictionary
-//                    //  let imageUrlData = (x!.value(forKey: "imageUrl"))!
-//                    let y = eachFetchedRestaurant
-//                    let tempPost = Post(json: y as! [String : Any] )
-//                    posts.append(tempPost)
-                    //                    print(imageUrlData)
-                    //                    self.downloadImage(from: URL(string: imageUrlData as! String)!){ () -> () in
-                    //                        //Callback
-                    //                        self.imageCollection.reloadData()
-                    //                    }
-                    
+                let tempUrl = snapshotValue.value(forKey: "profileImgUrl") as! String
                 completion(tempUrl)
                 }
-            
-                
-            
         }) { (error) in
             print(error.localizedDescription)
         }
     }
     
+    func getAllUsers(completion:@escaping ([User])->()){
+        ref.child("Users").observe(.value, with: { (snapshot) in
+            var allusers = [User]()
+            for user in snapshot.children {
+                let newUser = User(snapshot: user as! DataSnapshot)
+                allusers.append(newUser)
+            }
+            completion(allusers)
+        }) { (error) in
+            print(error.localizedDescription)
+        }
+    }
+    func getAllFollowing(userName:String,compeltion:@escaping (([User])->())){
+        ref.child("Users").child(cutEmailName(email:userName)).child("FollowingList").observe(.value, with: { (snapshot) in
+            var tempFollowing = [User]()
+            for user in snapshot.children {
+                let tempUser = User(snapshot: user as! DataSnapshot)
+                tempFollowing.append(tempUser)
+            }
+            compeltion(tempFollowing)
+        }) { (error) in
+            print(error)
+        }
+    }
+    
+    func getAllFollowers(userName:String,compeltion:@escaping (([User])->())){
+        ref.child("Users").child(cutEmailName(email:userName)).child("FollowersList").observe(.value, with: { (snapshot) in
+            var tempFollowers = [User]()
+            for user in snapshot.children {
+                let tempUser = User(snapshot: user as! DataSnapshot)
+                tempFollowers.append(tempUser)
+            }
+            compeltion(tempFollowers)
+        }) { (error) in
+            print(error)
+        }
+    }
+    
+    func getAllLikesByEmail(email:String,postId:String,compeltion:@escaping ([Like])->()){
+        ref.child("Posts").child(cutEmailName(email: email)).child(postId).child("Likes").observe(.value, with: { (snapshot) in
+                    var tempLikes = [Like]()
+                    for like in snapshot.children {
+                        let tempLike = Like(snapshot: like as! DataSnapshot)
+                        tempLikes.append(tempLike)
+                    }
+                    compeltion(tempLikes)
+                }) { (error) in
+                    print(error)
+                }
+    }
+    
     func getAllPostsByEmail(email:String,completion:@escaping ([Post])->()){
-        
         ref?.child("Posts").child(cutEmailName(email: email)).observeSingleEvent(of: .value, with: { (snapshot) in
-            //in my case the answer is of type array so I can cast it like this, should also work with NSDictionary or NSNumber
             if let snapshotValue = snapshot.value as? NSDictionary{
-                //then I iterate over the values
                 var posts = [Post]()
                 for (_,eachFetchedRestaurant) in snapshotValue{
-                  //  let x = eachFetchedRestaurant as? NSDictionary
-                  //  let imageUrlData = (x!.value(forKey: "imageUrl"))!
                     let y = eachFetchedRestaurant
                     let tempPost = Post(json: y as! [String : Any] )
                     posts.append(tempPost)
-//                    print(imageUrlData)
-//                    self.downloadImage(from: URL(string: imageUrlData as! String)!){ () -> () in
-//                        //Callback
-//                        self.imageCollection.reloadData()
-//                    }
-                    
                 }
                 completion(posts)
-
-                
             }
         }) { (error) in
             print(error.localizedDescription)
         }
-        
     }
     
+    func  downloadImage(url: URL ,completion:@escaping (UIImage)->()){
+        print("Download Started")
+        getData(from: url) { data, response, error in
+            guard let data = data, error == nil else { return }
+            print(response?.suggestedFilename ?? url.lastPathComponent)
+            print("Download Finished")
+         //   completion()
+            DispatchQueue.main.async() {
+                let imageT = UIImage(data: data)!
+                completion(imageT)
+               // self.appendImage(img: imageT)
+                //  self.imageView.image = UIImage(data: data)
+             //   self.imageCollection.reloadData()
+                
+            }
+        }
+    }
+    
+    func getData(from url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> ()) {
+        URLSession.shared.dataTask(with: url, completionHandler: completion).resume()
+    }
     
     func getCurrentUserImages(){
   
@@ -105,7 +144,7 @@ class ModelFirebase {
     func uploadProfileImageToStorageAndData(image: UIImage,name: String,email: String,completion:@escaping ()->()) {
         let resizedImage = resizeImage(image: image, targetSize: CGSize.init(width: 300, height: 300))
         let imageData = resizedImage.jpegData(compressionQuality: 10)
-        let uploadRef = Storage.storage().reference().child("images/\(getEmailName())/profileImg.jpg")
+        let uploadRef = Storage.storage().reference().child("images/\(getEmailName())/\(getEmailName())profileImg.jpg")
         _ = uploadRef.putData(imageData!, metadata: nil) { (metadata, error) in
             uploadRef.downloadURL { (url, error) in
                 guard let downloadURL = url else {  return }// Uh-oh, an error occurred!
@@ -145,6 +184,35 @@ class ModelFirebase {
         ref.child("Users").child(getEmailName()).setValue(user.toJson())
     }
     
+    func deleteLikeFromData(post:Post){
+        getCurrentUser(){(result) in
+            self.ref.child("Posts").child(self.cutEmailName(email: post.email)).child(post.id).child("Likes").child(self.cutEmailName(email:  result.email)).removeValue()
+        }
+    }
+    
+    func deleteFollowFromData(user:User){
+        let currnerUserEmail = Auth.auth().currentUser?.email
+        self.ref.child("Users").child(self.cutEmailName(email: user.email)).child("FollowersList").child(self.cutEmailName(email:currnerUserEmail!)).removeValue()
+            
+        self.ref.child("Users").child(self.cutEmailName(email:currnerUserEmail!)).child("FollowingList").child(self.cutEmailName(email:  user.email)).removeValue()
+        
+    }
+    
+    func addLikeToData(post:Post){
+        getCurrentUser(){(result) in
+            let tempLike = Like(_userEmailName: self.cutEmailName(email:  result.email),_userProfileImageUrl:result.profileImgUrl)
+            self.ref.child("Posts").child(self.cutEmailName(email: post.email)).child(post.id).child("Likes").child(tempLike.userEmailName).setValue(tempLike.toJson())
+        }
+    }
+    
+    func addFollowToData(user:User){
+        getCurrentUser(){(result) in
+            self.ref.child("Users").child(self.cutEmailName(email: result.email)).child("FollowingList").child(self.cutEmailName(email: user.email)).setValue(user.toJson())
+
+            self.ref.child("Users").child(self.cutEmailName(email: user.email)).child("FollowersList").child(self.cutEmailName(email: result.email)).setValue(result.toJson())
+        }
+    }
+    
     func addCommentToData(comment:String,post:Post){
         getCurrentUser(){(result) in
             let tempComment = Comment(_comment: comment, _userEmailName: self.cutEmailName(email:  result.email))
@@ -169,7 +237,7 @@ class ModelFirebase {
     func getCurrentUser(completion:@escaping (_ user: User)->())
     {
         let usersRef = ref.child("Users/\(getEmailName())") // As you see on my Firebase screenshot
-        usersRef.observe(.value, with: { (snapshot) in
+        usersRef.observeSingleEvent(of: .value, with: { (snapshot) in
          let newUser = User(snapshot: snapshot)
             self.currentUser = newUser
             completion(newUser)
@@ -179,28 +247,31 @@ class ModelFirebase {
        // completion = self.currentUser
     }
     
-    func resizeImage(image: UIImage, targetSize: CGSize) -> UIImage {
-        let size = image.size
-        
-        let widthRatio  = targetSize.width  / image.size.width
-        let heightRatio = targetSize.height / image.size.height
-        
-        var newSize: CGSize
-        if(widthRatio > heightRatio) {
-            newSize = CGSize(width: size.width * heightRatio, height: size.height * heightRatio)
-        } else {
-            newSize = CGSize(width: size.width * widthRatio,  height: size.height * widthRatio)
+    func getAllFollowingPosts(compeltion:@escaping ([Post])->()){
+        let myEmailName = cutEmailName(email: (Auth.auth().currentUser?.email)!)
+        ref.child("Users").child(myEmailName).child("FollowingList").observeSingleEvent(of:.value, with: { (snapshot) in
+            var allUser = [User]()
+            for user in snapshot.children {
+                let tempUser = User(snapshot: user as! DataSnapshot)
+                allUser.append(tempUser)
+            }
+            var allPosts = [Post]()
+            for user in allUser{
+                self.getAllPostsByEmail(email: user.email){(posts) in
+                    for post in posts{
+                        allPosts.append(post)
+                    }
+                    compeltion(allPosts)
+                    allPosts.removeAll()
+                }
+            }
+        }) { (error) in
+            print(error)
         }
         
-        let rect = CGRect(x: 0, y: 0, width: newSize.width, height: newSize.height)
-        
-        UIGraphicsBeginImageContextWithOptions(newSize, false, 1.0)
-        image.draw(in: rect)
-        let newImage = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        
-        return newImage!
     }
     
-    
+    func resizeImage(image: UIImage, targetSize: CGSize) -> UIImage {
+        return Model.instance.resizeImage(image:image, targetSize:targetSize)
+}
 }

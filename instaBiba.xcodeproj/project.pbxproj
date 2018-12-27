@@ -18,6 +18,9 @@
 		0455287D21B93BD400497F58 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0455287C21B93BD400497F58 /* Model.swift */; };
 		0455287F21BADECF00497F58 /* AddPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0455287E21BADECF00497F58 /* AddPostViewController.swift */; };
 		0492022721CB83C700A6F3FD /* commentsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0492022621CB83C700A6F3FD /* commentsTableViewCell.swift */; };
+		04A60C6121CF8A5E009E7B50 /* Like.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A60C6021CF8A5E009E7B50 /* Like.swift */; };
+		04A60C6321D29812009E7B50 /* FeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A60C6221D29812009E7B50 /* FeedViewController.swift */; };
+		04A60C6521D29E70009E7B50 /* FeedTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A60C6421D29E70009E7B50 /* FeedTableViewCell.swift */; };
 		04C4457521BF18E800ACCE2B /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C4457421BF18E800ACCE2B /* SearchViewController.swift */; };
 		04C4457721C07CEB00ACCE2B /* TestTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C4457621C07CEB00ACCE2B /* TestTableViewCell.swift */; };
 		04E2ACB821A9D23000238EFF /* ImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04E2ACB721A9D23000238EFF /* ImageCollectionViewCell.swift */; };
@@ -42,6 +45,9 @@
 		0455287C21B93BD400497F58 /* Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
 		0455287E21BADECF00497F58 /* AddPostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPostViewController.swift; sourceTree = "<group>"; };
 		0492022621CB83C700A6F3FD /* commentsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = commentsTableViewCell.swift; sourceTree = "<group>"; };
+		04A60C6021CF8A5E009E7B50 /* Like.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Like.swift; sourceTree = "<group>"; };
+		04A60C6221D29812009E7B50 /* FeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewController.swift; sourceTree = "<group>"; };
+		04A60C6421D29E70009E7B50 /* FeedTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedTableViewCell.swift; sourceTree = "<group>"; };
 		04C4457421BF18E800ACCE2B /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		04C4457621C07CEB00ACCE2B /* TestTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestTableViewCell.swift; sourceTree = "<group>"; };
 		04E2ACB721A9D23000238EFF /* ImageCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -78,6 +84,7 @@
 				0455287A21B925EB00497F58 /* ModelFirebase.swift */,
 				0455287C21B93BD400497F58 /* Model.swift */,
 				0405F0F421C93D6100BDE7C9 /* Comment.swift */,
+				04A60C6021CF8A5E009E7B50 /* Like.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -120,6 +127,8 @@
 				0405F0F021C44F9900BDE7C9 /* peopleViewController.swift */,
 				0405F0F221C67A4B00BDE7C9 /* postViewController.swift */,
 				0492022621CB83C700A6F3FD /* commentsTableViewCell.swift */,
+				04A60C6221D29812009E7B50 /* FeedViewController.swift */,
+				04A60C6421D29E70009E7B50 /* FeedTableViewCell.swift */,
 			);
 			path = instaBiba;
 			sourceTree = "<group>";
@@ -270,10 +279,13 @@
 			files = (
 				0405F0F121C44F9900BDE7C9 /* peopleViewController.swift in Sources */,
 				0455287D21B93BD400497F58 /* Model.swift in Sources */,
+				04A60C6521D29E70009E7B50 /* FeedTableViewCell.swift in Sources */,
 				04C4457521BF18E800ACCE2B /* SearchViewController.swift in Sources */,
 				0455287B21B925EB00497F58 /* ModelFirebase.swift in Sources */,
+				04A60C6121CF8A5E009E7B50 /* Like.swift in Sources */,
 				0405F0F321C67A4B00BDE7C9 /* postViewController.swift in Sources */,
 				04E2ACB821A9D23000238EFF /* ImageCollectionViewCell.swift in Sources */,
+				04A60C6321D29812009E7B50 /* FeedViewController.swift in Sources */,
 				0420DB6121A4806E00FEC203 /* LoginViewController.swift in Sources */,
 				04C4457721C07CEB00ACCE2B /* TestTableViewCell.swift in Sources */,
 				0455287721B90B1800497F58 /* User.swift in Sources */,

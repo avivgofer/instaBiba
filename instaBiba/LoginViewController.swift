@@ -87,6 +87,7 @@ class LoginViewController: UIViewController,UIImagePickerControllerDelegate,UINa
         print("Login buttin Clicked")
         if(userNameTextField.text != "" && passwordTextField.text != "")
         {
+            self.errorLabel.isHidden = true
             loginButton.isHidden = true
             signinProgressItem.isHidden = false
             signinProgressItem.startAnimating()
@@ -97,6 +98,9 @@ class LoginViewController: UIViewController,UIImagePickerControllerDelegate,UINa
                 self.presentingViewController?.dismiss(animated: true, completion: nil)
                 }
                 else{
+                    self.loginButton.isHidden = false
+                    self.signinProgressItem.stopAnimating()
+                    self.signinProgressItem.isHidden = true
                     print("there was an error with Authentication")
                     self.errorLabel.isHidden = false
                 }

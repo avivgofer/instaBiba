@@ -12,6 +12,9 @@ import Firebase
 
 class peopleViewController: UIViewController ,UICollectionViewDataSource ,UICollectionViewDelegate{
 
+    @IBOutlet weak var numberOfFollowing: UILabel!
+    @IBOutlet weak var numberOfFollowers: UILabel!
+    @IBOutlet weak var followButton: UIButton!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var numberOfPosts: UILabel!
     @IBOutlet weak var profileImageView: UIImageView!
@@ -29,18 +32,43 @@ class peopleViewController: UIViewController ,UICollectionViewDataSource ,UIColl
         imageCollection.backgroundColor = .white
         imageCollection.dataSource = self
         imageCollection.delegate = self
+        followButton.backgroundColor = UIColor.blue
+        followButton.layer.cornerRadius = 5
+        followButton.layer.borderWidth = 1
+        followButton.layer.borderColor = UIColor.black.cgColor
+        followButton.setTitle("Follow", for:.normal)
+        followButton.setTitleColor(UIColor.white, for: .normal)
+        followButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
+       
         ref = Database.database().reference()
        
         // Do any additional setup after loading the view.
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        GlobalSettings.flag = true
          nameLabel.text = self.user?.name ?? "sdfsdf"
         self.downloadProfileImage(from: URL(string: self.user!.profileImgUrl )!)
      //   self.profileName.text = self.user.name
         self.numberOfPosts.text = String(self.images.count)
         images.removeAll()
         loadImages()
+        loadFollows()
+    }
+    
+    func loadFollows(){
+        Model.instance.getAllFollowers(userName: (user?.email)!){(followers) in
+            self.numberOfFollowers.text = String(followers.count)
+            for user in followers{
+                if user.email == Auth.auth().currentUser?.email{
+                    self.followButton.setTitle("Following", for: .normal)
+                    self.followButton.backgroundColor = UIColor.gray
+                }
+            }
+        }
+        Model.instance.getAllFollowing(userName: (user?.email)!){(following) in
+            self.numberOfFollowing.text = String(following.count)
+        }
     }
     
     func downloadProfileImage(from url: URL) {
@@ -56,6 +84,19 @@ class peopleViewController: UIViewController ,UICollectionViewDataSource ,UIColl
             }
         }
     }
+    @IBAction func followButtonClicked(_ sender: Any) {
+        if followButton.titleLabel?.text == "Following"
+        {
+            Model.instance.deleteFollowFromData(user:user!)
+            self.followButton.setTitle("Follow", for: .normal)
+            self.followButton.backgroundColor = UIColor.blue
+        }
+        else if followButton.titleLabel?.text == "Follow"{
+            Model.instance.addFollowToData(user:user!)
+            followButton.setTitle("Following", for: .normal)
+            followButton.backgroundColor = UIColor.gray
+        }
+    }
     
     func  appendImage(img :UIImage){
         self.images.append(img)
@@ -63,54 +104,39 @@ class peopleViewController: UIViewController ,UICollectionViewDataSource ,UIColl
         self.numberOfPosts.text = String(self.images.count)
     }
     
-    func downloadImage(from url: URL ,completion: ()->()) {
-        print("Download Started")
-        getData(from: url) { data, response, error in
-            guard let data = data, error == nil else { return }
-            print(response?.suggestedFilename ?? url.lastPathComponent)
-            print("Download Finished")
-            DispatchQueue.main.async() {
-                let imageT = UIImage(data: data)!
-                self.appendImage(img: imageT)
-                //  self.imageView.image = UIImage(data: data)
-                self.imageCollection.reloadData()
-                
+  
+    
+    
+    func newLoad(len:Int = (-1)){
+        // let length = self.posts?.count
+        var length: Int?
+        length = len
+        if length == (-1){length = (self.posts?.count)!}
+        if(length != nil && length! > 0)
+        {
+            //        for (post) in self.posts!{
+            let imageUrlData = (self.posts![length!-1].imageUrl)
+            //            print(imageUrlData)
+            if(GlobalSettings.flag)
+            {
+                Model.instance.downloadImage(url: URL(string: imageUrlData )!) {(image) -> () in
+                //Callback
+                    self.appendImage(img: image)
+                    self.imageCollection.reloadData()
+                    self.newLoad(len: (length! - 1))
+            }
             }
         }
     }
-    
-    
-    
     
     func loadImages(){
         Model.instance.getAllPostsByEmail(email:(self.user?.email)!){ (result) -> () in
-            self.posts = result
-            for (post) in self.posts!{
-                self.downloadImage(from: URL(string:post.imageUrl)!){ () -> () in
-                    self.imageCollection.reloadData()
-                }
-            }
+            var temp = result
+            temp.sort(by: { $0.date.compare($1.date) == .orderedAscending })
+            self.posts = temp
+            self.newLoad()
         }
     }
-//        ref?.child("Posts").child((self.user?.name)!).observeSingleEvent(of: .value, with: { (snapshot) in
-//            //in my case the answer is of type array so I can cast it like this, should also work with NSDictionary or NSNumber
-//            if let snapshotValue = snapshot.value as? NSDictionary{
-//                //then I iterate over the values
-//                for (_,eachFetchedRestaurant) in snapshotValue{
-//                    let x = eachFetchedRestaurant as? NSDictionary
-//                    let imageUrlData = (x!.value(forKey: "imageUrl"))!
-//                    let y = eachFetchedRestaurant
-//                    let tempPost = Post(json: y as! [String : Any] )
-//                    print(imageUrlData)
-//                    self.downloadImage(from: URL(string: imageUrlData as! String)!){ () -> () in
-//                        //Callback
-//                        self.imageCollection.reloadData()
-//                    }
-//                }
-//            }
-//        }) { (error) in
-//            print(error.localizedDescription)
-//        }
     
     
     func getData(from url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> ()) {
@@ -140,24 +166,21 @@ class peopleViewController: UIViewController ,UICollectionViewDataSource ,UIColl
         cell.imageView.image = image
         return cell
     }
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "postViewController") as? postViewController
         {
             print(indexPath[1])
-          //  vc.user = self.users[indexPath[1]]
-//
-           
             vc.postImage = images[indexPath[1]]
-            vc.post = self.posts![indexPath[1]]
+            var temp = self.posts!
+            temp.sort(by: { $1.date.compare($0.date) == .orderedAscending })
+            vc.post = temp[indexPath[1]]
             vc.userNameTemp = self.user?.name
             vc.userProfileImageTemp = self.profileImageView
-          //  vc.userProfileImage = self.profileImageView
-         //   vc.myImageView.image = x
+            GlobalSettings.flag = false
             present(vc, animated: true, completion: nil)
         }
-    }
- 
-    
+    } 
 }
     
     /*

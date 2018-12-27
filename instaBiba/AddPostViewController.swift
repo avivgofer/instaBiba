@@ -25,7 +25,8 @@ class AddPostViewController: UIViewController,UIImagePickerControllerDelegate,UI
         super.viewDidLoad()
         imagePicker.delegate = self
         addPostProgressItem.isHidden = true
-        self.hideKeyboardWhenTappedAround() 
+        self.hideKeyboardWhenTappedAround()
+        openImagePicker()
         // Do any additional setup after loading the view.
     }
     
@@ -35,10 +36,14 @@ class AddPostViewController: UIViewController,UIImagePickerControllerDelegate,UI
     }
     
     @IBAction func selectImageClicked(_ sender: Any) {
+        openImagePicker()
+      
+    }
+    
+    func openImagePicker(){
         self.imagePicker.sourceType = .photoLibrary
         imagePicker.allowsEditing = true
         present(imagePicker,animated: true,completion: nil)
-      
     }
     
     @IBAction func addPostClicked(_ sender: Any) {
@@ -47,7 +52,13 @@ class AddPostViewController: UIViewController,UIImagePickerControllerDelegate,UI
         addPostProgressItem.startAnimating()
     Model.instance.uploadPostToStorageAndData(image:self.selectedImageView.image!,title:self.titleTextFiled.text!,completion:{
             self.addPostProgressItem.stopAnimating()
-            self.presentingViewController?.dismiss(animated: true, completion: nil)
+        self.tabBarController?.selectedIndex = 0
+//        if let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ViewController") as? ViewController
+//        {
+//          //  vc.user = self.users[indexPath[1]]
+//            self.present(vc, animated: true, completion: nil)
+//        }
+           // self.presentingViewController?.dismiss(animated: true, completion: nil)
         })
         
     }

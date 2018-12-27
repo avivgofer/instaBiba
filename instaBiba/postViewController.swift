@@ -11,29 +11,60 @@ import Firebase
 
 class postViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
+    @IBOutlet weak var LikesLabel: UILabel!
+    @IBOutlet weak var likeButton: UIButton!
     @IBOutlet weak var userNameLabel: UILabel!
     @IBOutlet weak var userProfileImage: UIImageView!
     @IBOutlet weak var myTableView: UITableView!
     @IBOutlet weak var newCommentField: UITextField!
     @IBOutlet weak var postTitle: UILabel!
     @IBOutlet weak var myImageView: UIImageView!
+    @IBOutlet weak var timeLabel: UILabel!
     var post :Post?
     var allComments = [Comment]()
+    var allLikes = [Like]()
     var postImage :UIImage?
     var userProfileImageTemp :UIImageView?
     var userNameTemp :String?
     override func viewDidLoad() {
         super.viewDidLoad()
         self.hideKeyboardWhenTappedAround() 
-        myImageView.image = postImage!
-        postTitle.text = post?.title
-        userProfileImage.image = userProfileImageTemp!.image
-        userNameLabel.text = userNameTemp!
-        myTableView.delegate = self
-        myTableView.dataSource = self
-        myTableView.separatorStyle = .none
-        circleImageView(image: userProfileImage)
+        self.setPreference()
+        self.timeLabel.text = self.getTimestringFromTimeInterval(interval: self.getTimeIntervalFromStringDate(string: post!.date))
         // Do any additional setup after loading the view.
+    }
+    
+    func setPreference(){
+        self.myImageView.image = postImage!
+        self.postTitle.text = post?.title
+        self.userProfileImage.image = userProfileImageTemp!.image
+        self.userNameLabel.text = userNameTemp!
+        self.myTableView.delegate = self
+        self.myTableView.dataSource = self
+        self.myTableView.separatorStyle = .none
+        self.myImageView.clipsToBounds = true
+        self.myImageView.contentMode = UIView.ContentMode.scaleAspectFill
+        self.circleImageView(image: userProfileImage)
+    }
+    
+    @IBAction func likeButtonClicked(_ sender: Any) {
+        if likeButton.currentImage == UIImage(named: "redHeartIcon")
+        {
+            likeButton.setImage(UIImage(named: "heartIcon"), for: .normal)
+            Model.instance.deleteLikeFromData(post:self.post!)
+        }
+        else{
+            likeButton.setImage(UIImage(named: "redHeartIcon"), for: .normal)
+            Model.instance.addLikeToData(post:self.post!)
+        }
+    }
+    
+    @IBAction func click(_ sender: Any) {
+//        let testFrame : CGRect = CGRect(x: 0, y: 0, width: 100, height: 100)
+//        var testView : UIView = UIView(frame: testFrame)
+//        testView.backgroundColor = UIColor(red: 0.5, green: 0.5, blue: 0.5, alpha: 1.0)
+//        testView.alpha=0.5
+//        self.view.addSubview(testView)
     }
     
     func circleImageView(image: UIImageView)
@@ -54,6 +85,40 @@ class postViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
     
     override func viewWillAppear(_ animated: Bool) {
+      loadComments()
+      loadLikes()
+    }
+    
+    func loadLikes(){
+        Model.instance.getAllLikesByEmail(email:(post?.email)!,postId:(post?.id)!){(likes) in
+            self.allLikes = likes
+            for like in self.allLikes{
+                if(like.userEmailName == self.cutEmailName(email: (Auth.auth().currentUser?.email)!)){
+                    self.likeButton.setImage(UIImage(named: "redHeartIcon"), for: .normal)
+                }
+            }
+            
+            self.LikesLabel.text = "\(self.allLikes.count) Likes"
+        }
+//        let usersRef = dataBaseRef.child("Posts").child(cutEmailName(email: (post?.email)!)).child((post?.id)!).child("Likes")
+//        usersRef.observe(.value, with: { (snapshot) in
+//            var tempLikes = [Like]()
+//            for like in snapshot.children {
+//                let tempLike = Like(snapshot: like as! DataSnapshot)
+//                tempLikes.append(tempLike)
+//                if(tempLike.userEmailName == self.cutEmailName(email: (Auth.auth().currentUser?.email)!)){
+//                    self.likeButton.setImage(UIImage(named: "redHeartIcon"), for: .normal)
+//                }
+//            }
+//            self.allLikes = tempLikes
+//            //  print(self.users)
+//            self.LikesLabel.text = "\(self.allLikes.count) Likes"
+//        }) { (error) in
+//            print(error)
+//        }
+    }
+    
+    func loadComments(){
         let usersRef = dataBaseRef.child("Posts").child(cutEmailName(email: (post?.email)!)).child((post?.id)!).child("Comments")
         usersRef.observe(.value, with: { (snapshot) in
             var tempComments = [Comment]()
@@ -65,24 +130,15 @@ class postViewController: UIViewController, UITableViewDataSource, UITableViewDe
                 let dateFormatter = DateFormatter()
                 dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
                 let x = tempComment.date
-                guard let date = dateFormatter.date(from: x) else {
+                guard dateFormatter.date(from: x) != nil else {
                     fatalError("ERROR: Date conversion failed due to mismatched format.")
                 }
-                
-//                let dateFormatter = DateFormatter()
-//                dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
-//               // dateFormatter.locale = NSLocale(localeIdentifier: "en_US_POSIX") as Locale
-//                let date = dateFormatter.date(from: tempComment.date)!
-//                let timeInterval = date.timeIntervalSinceNow
-//                print(timeInterval)
-//                print(self.getTimestringFromTimeInterval(interval: timeInterval))
             }
             self.allComments = tempComments
-          //  print(self.users)
+            //  print(self.users)
             self.myTableView.reloadData()
         }) { (error) in
-            let alertView = UIAlertView(title: "Erreur", message: error.localizedDescription, delegate: nil, cancelButtonTitle: "OK")
-            alertView.show()
+            print(error)
         }
     }
     
@@ -109,7 +165,7 @@ class postViewController: UIViewController, UITableViewDataSource, UITableViewDe
         }else if(minutes >= 1){
             return String(minutes)+"m"
         }else{
-            return String(seconds)+"sec"
+            return String(seconds)+" sec"
         }
        
     }
@@ -150,35 +206,15 @@ class postViewController: UIViewController, UITableViewDataSource, UITableViewDe
     
      func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "commentCell", for: indexPath) as! commentsTableViewCell
-
+        
         if tableView == self.myTableView {
             let tempComment = allComments[indexPath.row]
-//            cell.backgroundColor = UIColor.white
-//            cell.layer.borderColor = UIColor.black.cgColor
-//            cell.layer.borderWidth = 1
-//            cell.layer.cornerRadius = 8
-//            cell.clipsToBounds = true
-            
             Model.instance.getProfileImageUrlByEmailName(emailName: tempComment.userEmailName){(result) -> () in
-                
-                self.storageRef.reference(forURL:result).getData(maxSize: 10 * 1024 * 1024) { (imgData, error) in
-                    if let error = error {
-                        let alertView = UIAlertView(title: "Erreur", message: error.localizedDescription, delegate: nil, cancelButtonTitle: "OK")
-                        alertView.show()
-                    } else {
-                        DispatchQueue.main.async(execute: {
-                            if let data = imgData {
-                                cell.userImage.image = UIImage(data: data)
-                            }
-                        })
+                Model.instance.downloadImage(url: URL(string:result)!){(image) in
+                    cell.userImage.image = image
+                    
                     }
-                }
-                
-                print(result)
-                
             }
-          //  cell.imageView?.image = Model.i
-           // cell.watcherName.text = allComments[indexPath.row].comment
              cell.timeLabel.text = self.getTimestringFromTimeInterval(interval: self.getTimeIntervalFromStringDate(string: tempComment.date))
              cell.commentLabel.text = tempComment.comment
             cell.userNameLabel.text = tempComment.userEmailName+":"
