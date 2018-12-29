@@ -101,6 +101,16 @@ class Model {
         }
     }
     
+    func getAllChat(user:User,completion:@escaping ([Message])->()){
+        modelFirebase.getAllChat(user:user){(result) in
+            completion(result)
+        }
+    }
+    
+    func addMessage(message:Message,user:User){
+        modelFirebase.addMessage(message:message,user:user)
+    }
+    
     func addFollowToData(user:User){
         modelFirebase.addFollowToData(user:user)
     }

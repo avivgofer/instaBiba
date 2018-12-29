@@ -56,6 +56,17 @@ class peopleViewController: UIViewController ,UICollectionViewDataSource ,UIColl
         loadFollows()
     }
     
+
+    @IBAction func chatButtonClicked(_ sender: Any) {
+        if let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "chatViewController") as? chatViewController
+        {
+            vc.hisUser = user
+            present(vc, animated: true, completion: nil)
+        }
+    }
+    
+    
+    
     func loadFollows(){
         Model.instance.getAllFollowers(userName: (user?.email)!){(followers) in
             self.numberOfFollowers.text = String(followers.count)
@@ -104,7 +115,7 @@ class peopleViewController: UIViewController ,UICollectionViewDataSource ,UIColl
         self.numberOfPosts.text = String(self.images.count)
     }
     
-  
+    
     
     
     func newLoad(len:Int = (-1)){

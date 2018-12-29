@@ -34,8 +34,8 @@ class ViewController: UIViewController ,UICollectionViewDataSource,UICollectionV
     @IBOutlet weak var LoginButton: UIBarButtonItem!
     var ref : DatabaseReference?
     var imagePicker = UIImagePickerController()
-    @IBOutlet weak var addImageButton: UIBarButtonItem!
-    var currentUser : User?
+//    @IBOutlet weak var addImageButton: UIBarButtonItem!
+//    var currentUser : User?
    
     override func viewDidLoad() { 
         super.viewDidLoad()

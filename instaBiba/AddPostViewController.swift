@@ -52,13 +52,17 @@ class AddPostViewController: UIViewController,UIImagePickerControllerDelegate,UI
         addPostProgressItem.startAnimating()
     Model.instance.uploadPostToStorageAndData(image:self.selectedImageView.image!,title:self.titleTextFiled.text!,completion:{
             self.addPostProgressItem.stopAnimating()
+        self.presentingViewController?.dismiss(animated: true, completion: nil)
         self.tabBarController?.selectedIndex = 0
+         self.titleTextFiled.text = ""
+        self.addPostButton.isHidden = false
+        self.addPostProgressItem.isHidden = true
+        self.selectedImageView.image = nil
 //        if let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ViewController") as? ViewController
 //        {
 //          //  vc.user = self.users[indexPath[1]]
 //            self.present(vc, animated: true, completion: nil)
 //        }
-           // self.presentingViewController?.dismiss(animated: true, completion: nil)
         })
         
     }

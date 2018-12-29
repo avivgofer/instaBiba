@@ -99,6 +99,24 @@ class ModelFirebase {
                 }
     }
     
+    func getAllChat(user:User,completion:@escaping ([Message])->()){
+        
+        ref?.child("Users").child(cutEmailName(email:(Auth.auth().currentUser?.email)!)).child("Chat").child(cutEmailName(email: user.email)).observe(.value, with: { (snapshot) in
+            if let snapshotValue = snapshot.value as? NSDictionary{
+                var allMess = [Message]()
+                for (_,eachFetchedRestaurant) in snapshotValue{
+                    let y = eachFetchedRestaurant
+                    let tempMes = Message(json: y as! [String : Any] )
+                    allMess.append(tempMes)
+                }
+                completion(allMess)
+            }
+        }) { (error) in
+            print(error.localizedDescription)
+        }
+        
+    }
+    
     func getAllPostsByEmail(email:String,completion:@escaping ([Post])->()){
         ref?.child("Posts").child(cutEmailName(email: email)).observeSingleEvent(of: .value, with: { (snapshot) in
             if let snapshotValue = snapshot.value as? NSDictionary{
@@ -203,6 +221,11 @@ class ModelFirebase {
             let tempLike = Like(_userEmailName: self.cutEmailName(email:  result.email),_userProfileImageUrl:result.profileImgUrl)
             self.ref.child("Posts").child(self.cutEmailName(email: post.email)).child(post.id).child("Likes").child(tempLike.userEmailName).setValue(tempLike.toJson())
         }
+    }
+    func addMessage(message:Message,user:User){
+//        let tempComment = Comment(_comment: comment, _userEmailName: self.cutEmailName(email:  result.email))
+        self.ref.child("Users").child(self.cutEmailName(email: user.email)).child("Chat").child(cutEmailName(email: message.userEmailName)).child(message.date).setValue(message.toJson())
+        self.ref.child("Users").child(self.cutEmailName(email: message.userEmailName)).child("Chat").child(cutEmailName(email: user.email)).child(message.date).setValue(message.toJson())
     }
     
     func addFollowToData(user:User){

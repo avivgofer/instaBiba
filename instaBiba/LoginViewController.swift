@@ -31,6 +31,8 @@ class LoginViewController: UIViewController,UIImagePickerControllerDelegate,UINa
         super.viewDidLoad()
         signinProgressItem.isHidden = true
         signUpProgressItem.isHidden = true
+        self.profileImg.layer.masksToBounds = true
+        self.profileImg.layer.cornerRadius = self.profileImg.frame.width/2
         imagePicker.delegate = self
         if Auth.auth().currentUser != nil{
             do{
