@@ -72,7 +72,7 @@ class LoginViewController: UIViewController,UIImagePickerControllerDelegate,UINa
                     print(_eror.localizedDescription )
                     
                 }else{
-                    Model.instance.uploadProfileImageToStorageAndData(image: self.profileImg.image!,name: self.nameSignup.text!,email: self.emailSignup.text!,completion:{
+                    Model.instance.uploadUserToStorageAndData(image: self.profileImg.image!,name: self.nameSignup.text!,email: self.emailSignup.text!,completion:{
                       //  ViewController.viewController
                         self.signUpProgressItem.stopAnimating()
                         self.presentingViewController?.dismiss(animated: true, completion: nil)

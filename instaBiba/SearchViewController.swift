@@ -10,18 +10,24 @@ import UIKit
 import FirebaseDatabase
 import FirebaseStorage
 
-class SearchViewController: UITableViewController,UISearchBarDelegate{
+class SearchViewController: UIViewController, UITableViewDataSource, UITableViewDelegate{
     
     
-    @IBOutlet weak var searchItem: UISearchBar!
     var users = [User]()
+    var filteredUsers = [User]()
+    let searchController = UISearchController(searchResultsController: nil)
     @IBOutlet weak var myTableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        searchItem.delegate = self
+        //searchItem.delegate = self
         self.myTableView.separatorStyle = .none
-        self.tableView.separatorStyle = .none
+       // myTableView.separatorStyle = .none
+        searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Search Movie"
+        navigationItem.searchController = searchController
+        definesPresentationContext = true
     }
     
     var dataBaseRef: DatabaseReference! {
@@ -48,12 +54,32 @@ class SearchViewController: UITableViewController,UISearchBarDelegate{
         self.presentingViewController?.dismiss(animated: true, completion: nil)
     }
     
-
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.users.count
+    func searchBarIsEmpty() -> Bool {
+        // Returns true if the text is empty or nil
+        return searchController.searchBar.text?.isEmpty ?? true
     }
     
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func filterContentForSearchText(_ searchText: String, scope: String = "All") {
+        filteredUsers = users.filter({( user : User) -> Bool in
+            return user.name.lowercased().contains(searchText.lowercased())
+        })
+        myTableView.reloadData()
+    }
+    
+    func isFiltering() -> Bool {
+        return searchController.isActive && !searchBarIsEmpty()
+    }
+
+    
+
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if isFiltering() {
+            return filteredUsers.count
+        }
+        return users.count
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         if let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "peopleViewController") as? peopleViewController
         {
@@ -64,29 +90,28 @@ class SearchViewController: UITableViewController,UISearchBarDelegate{
     
     
     
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "userCell", for: indexPath) as! TestTableViewCell
         if tableView == self.myTableView {
-            cell.watcherName.text = users[indexPath.row].name
-            Model.instance.downloadImage(url:URL(string: users[indexPath.row].profileImgUrl)!){(profileImage) in
+            let user: User
+            if isFiltering() {
+                user = filteredUsers[indexPath.row]
+            } else {
+                user = users[indexPath.row]
+            }
+            cell.watcherName.text = user.name
+            Model.instance.downloadImage(url:URL(string: user.profileImgUrl)!){(profileImage) in
                 cell.memberImage.image = profileImage
             }
-            
-//            storageRef.reference(forURL: users[indexPath.row].profileImgUrl).getData(maxSize: 10 * 1024 * 1024) { (imgData, error) in
-//                if let error = error {
-//                    let alertView = UIAlertView(title: "Erreur", message: error.localizedDescription, delegate: nil, cancelButtonTitle: "OK")
-//                    alertView.show()
-//                } else {
-//                    DispatchQueue.main.async(execute: {
-//                        if let data = imgData {
-//                            cell.memberImage.image = UIImage(data: data)
-//                        }
-//                    })
-//                }
-//            }
         }
         return cell
     }
-    
-    
 }
+
+extension SearchViewController: UISearchResultsUpdating {
+    // MARK: - UISearchResultsUpdating Delegate
+    func updateSearchResults(for searchController: UISearchController) {
+        filterContentForSearchText(searchController.searchBar.text!)
+    }
+}
+

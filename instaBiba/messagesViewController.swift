@@ -9,22 +9,27 @@
 import UIKit
 import Firebase
 //, UITableViewDataSource, UITableViewDelegate
-class messagesViewController: UIViewController {
+class messagesViewController: UIViewController , UITableViewDataSource, UITableViewDelegate{
  
     
     @IBOutlet weak var myTableView: UITableView!
-    
+    var allConversition = [User]()
     override func viewDidLoad() {
         
         super.viewDidLoad()
-        self.myTableView.separatorStyle = .singleLine
+       // self.myTableView.separatorStyle = .singleLine
+        loadConversition()
     }
     
     override func viewWillAppear(_ animated: Bool) {
       
     }
     
-    
+    func loadConversition(){
+        Model.instance.getAllConversition(){(result) in
+            self.allConversition = result
+        }
+    }
     
     func circleImageView(image: UIImageView)
     {
@@ -66,16 +71,16 @@ class messagesViewController: UIViewController {
         return emailName != "" ? (String(emailName)) : "noNameEmail"
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return CGFloat(integerLiteral: 350)
-    }
-    
-//    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        return (allPosts.count)
+//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+//        return CGFloat(integerLiteral: 350)
 //    }
-//
-//    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        let cell = tableView.dequeueReusableCell(withIdentifier: "postCell", for: indexPath) as! FeedTableViewCell
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return (self.allConversition.count)
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "postCell", for: indexPath) as! FeedTableViewCell
 //
 //        if tableView == self.myTableView {
 //            let tempPost = allPosts[indexPath.row]
@@ -95,7 +100,7 @@ class messagesViewController: UIViewController {
 //                cell.likesLabel.text = String(likes.count) + " Likes"
 //            }
 //        }
-//
-//        return cell
-//    }
+
+        return cell
+    }
 }

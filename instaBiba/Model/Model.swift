@@ -10,15 +10,13 @@ import Foundation
 import UIKit
 
 class Model {
+    
     static let instance:Model = Model()
-    
-  //  let studentsListNotification = "com.menachi.studentlist"
-    
-    //var modelSql:ModelSql?
+    var modelSql:ModelSql?
     var modelFirebase = ModelFirebase();
     
     private init(){
-        //modelSql = ModelSql()
+        modelSql = ModelSql()
     }
     
 //
@@ -38,16 +36,22 @@ class Model {
     
     func addNewUserToData(user:User){
         modelFirebase.addNewUserToData(user: user);
-        //Student.addNew(database: modelSql!.database, student: student)
+        User.addNew(database: modelSql?.database, user: user)
     }
     
     func getNameFromEmail() -> String{
         return modelFirebase.getEmailName()
     }
     
+    func getAllConversition(completion:@escaping([User])->()){
+        modelFirebase.getAllConversition(){(result) in
+            completion(result)
+        }
+    }
+    
     func getCurrentUser(completion:@escaping (_ user: User)->())
     {
-        modelFirebase.getCurrentUser(completion:{ result in
+        modelFirebase.getCurrentUser(completion:{ (result) in
             completion(result)
         })
         
@@ -60,11 +64,12 @@ class Model {
         })
     }
     
-    func uploadProfileImageToStorageAndData(image:UIImage,name: String,email: String,completion:@escaping ()->())
+    func uploadUserToStorageAndData(image:UIImage,name: String,email: String,completion:@escaping ()->())
     {
-        modelFirebase.uploadProfileImageToStorageAndData(image: image,name: name,email: email,completion:{
+        modelFirebase.uploadUserToStorageAndData(image: image,name: name,email: email){(user) in
+            User.addNew(database: self.modelSql?.database, user: user)
             completion()
-        })
+        }
     }
     
     func addNewPostToData(post:Post){

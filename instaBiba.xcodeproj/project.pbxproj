@@ -12,6 +12,9 @@
 		0405F0F521C93D6100BDE7C9 /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0405F0F421C93D6100BDE7C9 /* Comment.swift */; };
 		041C762721A4B26D005DE45A /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 041C762621A4B26D005DE45A /* GoogleService-Info.plist */; };
 		0420DB6121A4806E00FEC203 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0420DB6021A4806E00FEC203 /* LoginViewController.swift */; };
+		043E03E821D80B1A0025C688 /* ModelSql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043E03E721D80B1A0025C688 /* ModelSql.swift */; };
+		043E03EA21D80B960025C688 /* UserSql.swift in Sources */ = {isa = PBXBuildFile; fileRef = 043E03E921D80B960025C688 /* UserSql.swift */; };
+		043E03EC21D8C28F0025C688 /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 043E03EB21D8C28F0025C688 /* libsqlite3.0.tbd */; };
 		0455287721B90B1800497F58 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0455287621B90B1800497F58 /* User.swift */; };
 		0455287921B90D8200497F58 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0455287821B90D8200497F58 /* Post.swift */; };
 		0455287B21B925EB00497F58 /* ModelFirebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0455287A21B925EB00497F58 /* ModelFirebase.swift */; };
@@ -44,6 +47,9 @@
 		0405F0F421C93D6100BDE7C9 /* Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
 		041C762621A4B26D005DE45A /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		0420DB6021A4806E00FEC203 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		043E03E721D80B1A0025C688 /* ModelSql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelSql.swift; sourceTree = "<group>"; };
+		043E03E921D80B960025C688 /* UserSql.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserSql.swift; sourceTree = "<group>"; };
+		043E03EB21D8C28F0025C688 /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
 		0455287621B90B1800497F58 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		0455287821B90D8200497F58 /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		0455287A21B925EB00497F58 /* ModelFirebase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelFirebase.swift; sourceTree = "<group>"; };
@@ -79,6 +85,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				043E03EC21D8C28F0025C688 /* libsqlite3.0.tbd in Frameworks */,
 				24BB69478FDDC4222A413D9B /* Pods_instaBiba.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -96,6 +103,8 @@
 				0405F0F421C93D6100BDE7C9 /* Comment.swift */,
 				04A60C6021CF8A5E009E7B50 /* Like.swift */,
 				04CDC62121D4CFB6009336D5 /* Message.swift */,
+				043E03E721D80B1A0025C688 /* ModelSql.swift */,
+				043E03E921D80B960025C688 /* UserSql.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -151,6 +160,7 @@
 		23DB56D31F1A41DAAA8F0EC5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				043E03EB21D8C28F0025C688 /* libsqlite3.0.tbd */,
 				9297BAFC0EA1FDC585D42804 /* Pods_instaBiba.framework */,
 			);
 			name = Frameworks;
@@ -268,6 +278,7 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-instaBiba/Pods-instaBiba-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/GTMSessionFetcher/GTMSessionFetcher.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
+				"${BUILT_PRODUCTS_DIR}/SQLite.swift/SQLite.framework",
 				"${BUILT_PRODUCTS_DIR}/leveldb-library/leveldb.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 			);
@@ -277,6 +288,7 @@
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GTMSessionFetcher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SQLite.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/leveldb.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 			);
@@ -294,6 +306,7 @@
 			files = (
 				0405F0F121C44F9900BDE7C9 /* peopleViewController.swift in Sources */,
 				0455287D21B93BD400497F58 /* Model.swift in Sources */,
+				043E03E821D80B1A0025C688 /* ModelSql.swift in Sources */,
 				04A60C6521D29E70009E7B50 /* FeedTableViewCell.swift in Sources */,
 				04C4457521BF18E800ACCE2B /* SearchViewController.swift in Sources */,
 				0455287B21B925EB00497F58 /* ModelFirebase.swift in Sources */,
@@ -302,6 +315,7 @@
 				0405F0F321C67A4B00BDE7C9 /* postViewController.swift in Sources */,
 				04E2ACB821A9D23000238EFF /* ImageCollectionViewCell.swift in Sources */,
 				04A60C6321D29812009E7B50 /* FeedViewController.swift in Sources */,
+				043E03EA21D80B960025C688 /* UserSql.swift in Sources */,
 				0420DB6121A4806E00FEC203 /* LoginViewController.swift in Sources */,
 				04C4457721C07CEB00ACCE2B /* TestTableViewCell.swift in Sources */,
 				0455287721B90B1800497F58 /* User.swift in Sources */,

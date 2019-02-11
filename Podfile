@@ -10,5 +10,6 @@ target 'instaBiba' do
   pod 'Firebase/Database'
   pod 'Firebase/Auth'
   pod 'Firebase/Storage'
+  pod 'SQLite.swift'
 
 end
