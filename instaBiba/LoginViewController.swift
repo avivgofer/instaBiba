@@ -24,6 +24,7 @@ class LoginViewController: UIViewController,UIImagePickerControllerDelegate,UINa
     @IBOutlet weak var passwordSignup: UITextField!
     @IBOutlet weak var emailSignup: UITextField!
     @IBOutlet weak var errorLabel: UILabel!
+    @IBOutlet weak var errorLabelSignUp: UILabel!
     @IBOutlet weak var userNameTextField: UITextField!
     @IBOutlet weak var passwordTextField: UITextField!
     
@@ -31,6 +32,7 @@ class LoginViewController: UIViewController,UIImagePickerControllerDelegate,UINa
         super.viewDidLoad()
         signinProgressItem.isHidden = true
         signUpProgressItem.isHidden = true
+        errorLabelSignUp.isHidden = true
         self.profileImg.layer.masksToBounds = true
         self.profileImg.layer.cornerRadius = self.profileImg.frame.width/2
         imagePicker.delegate = self
@@ -63,6 +65,7 @@ class LoginViewController: UIViewController,UIImagePickerControllerDelegate,UINa
         
         if(emailSignup.text != "" && passwordSignup.text != "" && nameSignup.text != "" && self.profileImg.image != nil)
         {
+            errorLabelSignUp.isHidden = true
             signUpButton.isHidden = true
             signUpProgressItem.isHidden = false
             signUpProgressItem.startAnimating()
@@ -70,6 +73,7 @@ class LoginViewController: UIViewController,UIImagePickerControllerDelegate,UINa
                 if let _eror = error {
                     //something bad happning
                     print(_eror.localizedDescription )
+                    self.errorLabelSignUp.isHidden = false
                     
                 }else{
                     Model.instance.uploadUserToStorageAndData(image: self.profileImg.image!,name: self.nameSignup.text!,email: self.emailSignup.text!,completion:{
@@ -81,6 +85,9 @@ class LoginViewController: UIViewController,UIImagePickerControllerDelegate,UINa
                 }
             }
            
+        }
+        else{
+            errorLabelSignUp.isHidden = false
         }
     }
     
@@ -97,6 +104,7 @@ class LoginViewController: UIViewController,UIImagePickerControllerDelegate,UINa
                 if(user != nil) {
                 print("user Authenticated")
                     self.signinProgressItem.stopAnimating()
+                //   self.present(ViewController(), animated: true, completion: nil)
                 self.presentingViewController?.dismiss(animated: true, completion: nil)
                 }
                 else{

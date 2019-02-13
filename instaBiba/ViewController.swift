@@ -34,8 +34,6 @@ class ViewController: UIViewController ,UICollectionViewDataSource,UICollectionV
     @IBOutlet weak var LoginButton: UIBarButtonItem!
     var ref : DatabaseReference?
     var imagePicker = UIImagePickerController()
-//    @IBOutlet weak var addImageButton: UIBarButtonItem!
-//    var currentUser : User?
    
     override func viewDidLoad() { 
         super.viewDidLoad()
@@ -56,16 +54,21 @@ class ViewController: UIViewController ,UICollectionViewDataSource,UICollectionV
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        checkingAuthentictionAndPrefernce()
+    }
+    
+    
+    
+    func checkingAuthentictionAndPrefernce(){
         if (Auth.auth().currentUser != nil){
             GlobalSettings.flag = true
             self.LoginButton.title = "Logout"
             images.removeAll()
-           // self.loadImages()
             imageCollection.reloadData()
             posts?.removeAll()
             loadFollows()
             Model.instance.getAllPostsByEmail(email:((Auth.auth().currentUser!.email)!)){ (result) -> () in
-              //  result
+                //  result
                 var temp = result
                 temp.sort(by: { $0.date.compare($1.date) == .orderedAscending })
                 self.posts = temp
@@ -77,7 +80,14 @@ class ViewController: UIViewController ,UICollectionViewDataSource,UICollectionV
                 self.numberOfPosts.text = String(self.images.count)
             })
         }
+        else{
+            let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "LoginViewController")
+            
+            present(vc, animated: true, completion: nil)
+            
+        }
     }
+    
     //the (-1) is for download image after image to not mix the order of the images sort by time
     func newLoad(len:Int = (-1)){
         var length: Int?
@@ -214,37 +224,5 @@ extension ViewController :  UINavigationControllerDelegate , UIImagePickerContro
        return  Model.instance.getNameFromEmail()
     }
     
-    //Upload image from gallery to firebase
-//        func uploadImage(image: UIImage) {
-//          // Model.instance.upload
-//            let randomName = randomStringWithLength(length: 10)
-//            let imageData = image.jpegData(compressionQuality: 10)
-//            //let imageData = image.pngData()
-//
-//
-//            let uploadRef = Storage.storage().reference().child("images/\(getEmailName())/\(randomName).jpg")
-//            _ = uploadRef.putData(imageData!, metadata: nil) { (metadata, error) in
-//                uploadRef.downloadURL { (url, error) in
-//                        guard let downloadURL = url else {
-//                            // Uh-oh, an error occurred!
-//                            return
-//                        }
-//            let key = self.ref?.childByAutoId().key
-//            let image = ["url" : downloadURL.absoluteString]
-//            let childUpdates = ["/\(String(describing: key))": image]
-//            self.ref?.updateChildValues(childUpdates)
-//            }
-//        }
-//    }
-//
-//    //Open image picker from gallery
-//    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-//        if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage{
-//            images.append(image)
-//            uploadImage(image: image)
-//        }
-//        dismiss(animated: true, completion: nil)
-//        self.imageCollection.reloadData()
-//    }
 }
 

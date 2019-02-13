@@ -105,29 +105,19 @@ class ModelFirebase {
                 }
     }
     
-    func getAllConversition(completion:@escaping ([User])->()){
-//        ref?.child("Users").child(cutEmailName(email:(Auth.auth().currentUser?.email)!)).child("Chat").observe(.value, with: { (snapshot) in
-//         //   print(snapshot.value(forKey: "userProfileImageUrl")!)
-//            if let snapshotValue = snapshot.value as? NSDictionary{
-//                for (user,x) in snapshotValue{
-//                    for y in x{
-//                        print(y)
-//                    }
-//                    print(user)
-//                   // print(user.key)
-//                  //  print(user.value(forKey: "userProfileImageUrl"))
-//                }
-//
-//                var allMess = [Message]()
-////                for (_,eachFetchedRestaurant) in snapshotValue{
-////                    let y = eachFetchedRestaurant
-////                    let tempMes = Message(json: y as! [String : Any] )
-////                    allMess.append(tempMes)
-//                
-//              //  completion(allMess)
-//            }}) { (error) in
-//            print(error.localizedDescription)
-//        }
+    func getAllNamesOfConversition(completion:@escaping ([String])->()){
+        ref?.child("Users").child(cutEmailName(email:(Auth.auth().currentUser?.email)!)).child("Chat").observe(.value, with: { (snapshot) in
+         //   print(snapshot.value(forKey: "userProfileImageUrl")!)
+            var temp = [String]()
+            if let snapshotValue = snapshot.value as? NSDictionary{
+                for (user,x) in snapshotValue{
+                    print((x as AnyObject).value(forKey: "userProfileImageUrl") as Any)
+                    print(user)
+                    temp.append(String(user as! String))
+                    }
+                completion(temp)
+                }
+        })
     }
     
     //get's all the message betwin the current user and the send user

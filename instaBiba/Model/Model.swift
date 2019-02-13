@@ -19,21 +19,6 @@ class Model {
         modelSql = ModelSql()
     }
     
-//
-//    func getAllStudents() {
-//        modelFirebase.getAllStudents(callback: {(data:[Student]) in
-//            NotificationCenter.default.post(name: NSNotification.Name(self.studentsListNotification),
-//                                            object: self,
-//                                            userInfo: ["data":data])
-//
-//        })
-//    }
-    
-//    func getAllStudents(callback:@escaping ([Student])->Void){
-//        modelFirebase.getAllStudents(callback: callback);
-//        //return Student.getAll(database: modelSql!.database);
-//    }
-    
     func addNewUserToData(user:User){
         modelFirebase.addNewUserToData(user: user);
         User.addNew(database: modelSql?.database, user: user)
@@ -43,8 +28,8 @@ class Model {
         return modelFirebase.getEmailName()
     }
     
-    func getAllConversition(completion:@escaping([User])->()){
-        modelFirebase.getAllConversition(){(result) in
+    func getAllNamesOfConversition(completion:@escaping([String])->()){
+        modelFirebase.getAllNamesOfConversition(){(result) in
             completion(result)
         }
     }
@@ -223,9 +208,4 @@ class Model {
         return newImage!
     }
    
-    
-//    func getStudent(byId:String)->Student?{
-//        return modelFirebase.getStudent(byId:byId)
-//        //return Student.get(database: modelSql!.database, byId: byId);
-//    }
 }
